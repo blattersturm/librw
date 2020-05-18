@@ -16,6 +16,7 @@
 #include "d3d/rwd3d9.h"
 #include "gl/rwgl3.h"
 #include "gl/rwwdgl.h"
+#include "bgfx/rwbgfx.h"
 
 #define PLUGIN_ID 0
 
@@ -207,6 +208,7 @@ Engine::init(void)
 	d3d9::registerPlatformPlugins();
 	wdgl::registerPlatformPlugins();
 	gl3::registerPlatformPlugins();
+	rwbgfx::registerPlatformPlugins();
 
 	Engine::state = Initialized;
 	return 1;
@@ -234,6 +236,8 @@ Engine::open(EngineOpenParams *p)
 	engine->device = gl3::renderdevice;
 #elif RW_D3D9
 	engine->device = d3d::renderdevice;
+#elif RW_BGFX
+	engine->device = rwbgfx::renderdevice;
 #else
 	engine->device = null::renderdevice;
 #endif

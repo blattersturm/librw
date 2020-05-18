@@ -118,7 +118,6 @@ uploadEnvMatrix(Frame *frame)
 		RawMatrix invMtx;
 		Matrix::invert(&invMat, frame->getLTM());
 		convMatrix(&invMtx, &invMat);
-		invMtx.pos.set(0.0f, 0.0f, 0.0f);
 		RawMatrix::mult(&envMtx, &invMtx, &normal2texcoord);
 	}
 	glUniformMatrix4fv(U(u_texMatrix), 1, GL_FALSE, (float*)&envMtx);
@@ -175,13 +174,9 @@ matfxRenderCB(Atomic *atomic, InstanceDataHeader *header)
 	setWorldMatrix(atomic->getFrame()->getLTM());
 	lightingCB(atomic);
 
-#ifdef RW_GL_USE_VAOS
-	glBindVertexArray(header->vao);
-#else
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, header->ibo);
 	glBindBuffer(GL_ARRAY_BUFFER, header->vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, header->ibo);
 	setAttribPointers(header->attribDesc, header->numAttribs);
-#endif
 
 	lastEnvFrame = nil;
 
@@ -203,9 +198,7 @@ matfxRenderCB(Atomic *atomic, InstanceDataHeader *header)
 		}
 		inst++;
 	}
-#ifndef RW_GL_USE_VAOS
 	disableAttribPointers(header->attribDesc, header->numAttribs);
-#endif
 }
 
 ObjPipeline*

@@ -11,8 +11,6 @@
 #ifdef RW_GL3
 #define RW_OPENGL
 #define RWDEVICE gl3
-// doesn't help
-//#define RW_GL_USE_VAOS
 #endif
 
 #ifdef RW_GLES2
@@ -20,6 +18,10 @@
 #endif
 #ifdef RW_GLES3
 #define RW_GLES
+#endif
+
+#ifdef RW_BGFX
+#define RWDEVICE rwbgfx
 #endif
 
 #ifdef RW_D3D9
@@ -528,6 +530,8 @@ enum Platform
 	PLATFORM_WDGL = 11,	// WarDrum OpenGL
 	PLATFORM_GL3  = 12,	// my GL3 implementation
 
+	PLATFORM_BGFX  = 14,// our BGFX implementation
+
 	NUM_PLATFORMS,
 
 	FOURCC_PS2 = 0x00325350		// 'PS2\0'
@@ -599,6 +603,7 @@ enum PluginID
 	ID_RASTERD3D9    = MAKEPLUGINID(VEND_RASTER, PLATFORM_D3D9),
 	ID_RASTERWDGL    = MAKEPLUGINID(VEND_RASTER, PLATFORM_WDGL),
 	ID_RASTERGL3     = MAKEPLUGINID(VEND_RASTER, PLATFORM_GL3),
+	ID_RASTERBGFX	 = MAKEPLUGINID(VEND_RASTER, PLATFORM_BGFX),
 
 	// anything driver/device related (only as allocation tag)
 	ID_DRIVER        = MAKEPLUGINID(VEND_DRIVER, 0)

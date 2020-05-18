@@ -32,9 +32,6 @@ freeInstanceData(Geometry *geometry)
 	geometry->instData = nil;
 	glDeleteBuffers(1, &header->ibo);
 	glDeleteBuffers(1, &header->vbo);
-#ifdef RW_GL_USE_VAOS
-	glDeleteBuffers(1, &header->vao);
-#endif
 	rwFree(header->indexBuffer);
 	rwFree(header->vertexBuffer);
 	rwFree(header->attribDesc);
@@ -89,14 +86,11 @@ instanceMesh(rw::ObjPipeline *rwpipe, Geometry *geo)
 	header->ibo = 0;
 	header->vbo = 0;
 
-#ifdef RW_GL_USE_VAOS
-	glGenVertexArrays(1, &header->vao);
-	glBindVertexArray(header->vao);
-#endif
 	glGenBuffers(1, &header->ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, header->ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, header->totalNumIndex*2,
 			header->indexBuffer, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	return header;
 }
@@ -288,17 +282,10 @@ defaultInstanceCB(Geometry *geo, InstanceDataHeader *header, bool32 reinstance)
 		}
 	}
 
-#ifdef RW_GL_USE_VAOS
-	glBindVertexArray(header->vao);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, header->ibo);
-#endif
 	glBindBuffer(GL_ARRAY_BUFFER, header->vbo);
 	glBufferData(GL_ARRAY_BUFFER, header->totalNumVertex*attribs[0].stride,
 	             header->vertexBuffer, GL_STATIC_DRAW);
-#ifdef RW_GL_USE_VAOS
-	setAttribPointers(header->attribDesc, header->numAttribs);
-	glBindVertexArray(0);
-#endif
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void

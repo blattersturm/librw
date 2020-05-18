@@ -19,6 +19,8 @@
 #include "gl/rwwdgl.h"
 #include "gl/rwgl3.h"
 #include "gl/rwgl3plg.h"
+#include "bgfx/rwbgfx.h"
+#include "bgfx/rwbgfxplg.h"
 
 #define PLUGIN_ID ID_MATFX
 
@@ -593,6 +595,7 @@ registerMatFXPlugin(void)
 	d3d9::initMatFX();
 	wdgl::initMatFX();
 	gl3::initMatFX();
+	rwbgfx::initMatFX();
 
 	matFXGlobals.atomicOffset =
 	Atomic::registerPlugin(sizeof(int32), ID_MATFX,

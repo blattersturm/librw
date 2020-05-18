@@ -7,19 +7,22 @@
 layout(std140) uniform State
 {
 	vec2 u_alphaRef;
-	vec4  u_fogData;
+
+	float u_fogStart;
+	float u_fogEnd;
+	float u_fogRange;
+	float u_fogDisable;
 	vec4  u_fogColor;
 };
 #else
 uniform vec2 u_alphaRef;
-uniform vec4  u_fogData;
+
+uniform float u_fogStart;
+uniform float u_fogEnd;
+uniform float u_fogRange;
+uniform float u_fogDisable;
 uniform vec4  u_fogColor;
 #endif
-
-#define u_fogStart (u_fogData.x)
-#define u_fogEnd (u_fogData.y)
-#define u_fogRange (u_fogData.z)
-#define u_fogDisable (u_fogData.w)
 
 #ifdef USE_UBOS
 layout(std140) uniform Scene
