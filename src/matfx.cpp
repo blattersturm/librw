@@ -227,6 +227,14 @@ MatFX::setEnvCoefficient(float32 coef)
 		this->fx[i].env.coefficient = coef;
 }
 
+void
+MatFX::setEnvFBAlpha(bool32 useFBAlpha)
+{
+	int32 i = this->getEffectIndex(ENVMAP);
+	if(i >= 0)
+		this->fx[i].env.fbAlpha = useFBAlpha;
+}
+
 Texture*
 MatFX::getEnvTexture(void)
 {
@@ -252,6 +260,15 @@ MatFX::getEnvCoefficient(void)
 	if(i >= 0)
 		return this->fx[i].env.coefficient;
 	return 0.0f;
+}
+
+bool32
+MatFX::getEnvFBAlpha(void)
+{
+	int32 i = this->getEffectIndex(ENVMAP);
+	if(i >= 0)
+		return this->fx[i].env.fbAlpha;
+	return 0;
 }
 
 
