@@ -1,5 +1,5 @@
 // shaderc command line:
-// F:\dev\code\bgfx\.build\win64_vs2019\bin\shadercRelease.exe --debug -f im2d.vert -o im2d_vs_bgfx.inc --bin2c --type v --platform windows --profile vs_4_0
+// shadercRelease.exe --debug -f im2d.vert -o im2d_vs_bgfx.inc --bin2c --type v --platform windows --profile vs_4_0
 
 struct Output
 {

@@ -27,14 +27,14 @@ namespace rwbgfx {
 
 static Shader *envShader;
 static bgfx::UniformHandle u_texMatrix;
-static bgfx::UniformHandle u_coefficient;
+static bgfx::UniformHandle u_fxparams;
 static bgfx::UniformHandle u_colorClamp;
 
 static void*
 matfxOpen(void *o, int32, int32)
 {
 	u_texMatrix = bgfx::createUniform("u_texMatrix", bgfx::UniformType::Mat4);
-	u_coefficient = bgfx::createUniform("u_coefficient", bgfx::UniformType::Vec4);
+	u_fxparams = bgfx::createUniform("u_fxparams", bgfx::UniformType::Vec4);
 	u_colorClamp = bgfx::createUniform("u_colorClamp", bgfx::UniformType::Vec4);
 	matFXGlobals.pipelines[PLATFORM_BGFX] = makeMatFXPipeline();
 
@@ -144,8 +144,8 @@ matfxEnvRender(InstanceDataHeader *header, InstanceData *inst, MatFX::Env *env)
 	surfProps[3] = 0.0f;
 	bgfx::setUniform(u_surfProps, surfProps);
 
-	float tmp[4] = { env->coefficient, 0.0f, 0.0f, 0.0f };
-	bgfx::setUniform(u_coefficient, tmp);
+	float tmp[4] = { env->coefficient, env->fbAlpha ? 0.0f : 1.0f, 0.0f, 0.0f };
+	bgfx::setUniform(u_fxparams, tmp);
 	static float zero[4];
 	static float one[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	// This clamps the vertex color below. With it we can achieve both PC and PS2 style matfx

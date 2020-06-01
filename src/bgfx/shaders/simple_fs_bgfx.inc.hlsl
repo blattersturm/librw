@@ -1,5 +1,5 @@
 // shaderc command line:
-// F:\dev\code\bgfx\.build\win64_vs2019\bin\shadercRelease.exe --debug -f simple.frag -o simple_fs_bgfx.inc --bin2c --type fragment --platform windows --profile ps_4_0
+// shadercRelease.exe --debug -f simple.frag -o simple_fs_bgfx.inc --bin2c --type fragment --platform windows --profile ps_4_0
 
 float intBitsToFloat(int _x) { return asfloat(_x); }
 float2 intBitsToFloat(uint2 _x) { return asfloat(_x); }

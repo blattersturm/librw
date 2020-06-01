@@ -1,5 +1,5 @@
 // shaderc command line:
-// F:\dev\code\bgfx\.build\win64_vs2019\bin\shadercRelease.exe --debug -f matfx_env.frag -o matfx_env_fs_bgfx.inc --bin2c --type f --platform windows --profile ps_4_0
+// shadercRelease.exe --debug -f matfx_env.frag -o matfx_env_fs_bgfx.inc --bin2c --type f --platform windows --profile ps_4_0
 
 float intBitsToFloat(int _x) { return asfloat(_x); }
 float2 intBitsToFloat(uint2 _x) { return asfloat(_x); }
@@ -304,19 +304,20 @@ discard;
 }
 uniform SamplerState tex0Sampler : register(s0); uniform Texture2D tex0Texture : register(t0); static BgfxSampler2D tex0 = { tex0Sampler, tex0Texture };
 uniform SamplerState tex1Sampler : register(s1); uniform Texture2D tex1Texture : register(t1); static BgfxSampler2D tex1 = { tex1Sampler, tex1Texture };
-uniform float4 u_coefficient;
-static float4 u_colorClamp;
+uniform float4 u_fxparams;
+uniform float4 u_colorClamp;
 void main( float4 gl_FragCoord : SV_POSITION , float4 v_color0 : COLOR , float3 v_texcoord0 : TEXCOORD0 , float2 v_texcoord1 : TEXCOORD1 , out float4 bgfx_FragData0 : SV_TARGET0 )
 {
 float4 bgfx_VoidFrag = vec4_splat(0.0);
 float4 color;
 float4 pass1 = v_color0;
-float4 envColor = pass1;
+float4 envColor = max(pass1, u_colorClamp);
 pass1 *= bgfxTexture2D(tex0, float2(v_texcoord0.x, 1.0-v_texcoord0.y));
-float4 pass2 = envColor*u_coefficient.x*bgfxTexture2D(tex1, float2(v_texcoord1.x, 1.0-v_texcoord1.y));
+float4 pass2 = envColor*(u_fxparams.x)*bgfxTexture2D(tex1, float2(v_texcoord1.x, 1.0-v_texcoord1.y));
 pass1.rgb = mix(u_fogColor.rgb, pass1.rgb, v_texcoord0.z);
 pass2.rgb = mix(float3(0.0, 0.0, 0.0), pass2.rgb, v_texcoord0.z);
-color.rgb = pass1.rgb*pass1.a + pass2.rgb;
+float fba = max(pass1.a, (u_fxparams.y));
+color.rgb = pass1.rgb*pass1.a + pass2.rgb*fba;
 color.a = pass1.a;
 DoAlphaTest(color.a);
 bgfx_FragData0 = color;
